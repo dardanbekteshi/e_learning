@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">EmptyExercise</string>
+    <string name="title_activity_main22">Main22Activity</string>
+
+    <string name="ic_access_alarms">&#xe000;</string>
+    <string name="ic_access_time">&#xe001;</string>
+    <string name="ic_shopping_cart">&#xe14f;</string>
+</resources>

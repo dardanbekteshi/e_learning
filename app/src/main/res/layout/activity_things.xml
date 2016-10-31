@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/thingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light">
+
+    <ImageView
+
+        android:id="@+id/thingImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/thingName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/primary_light"
+        android:scaleType="centerInside"
+        android:src="@drawable/orange" />
+
+    <TextView
+        android:id="@+id/thingName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonAudioThing"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:background="@color/primary_light"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Orange"
+        android:textColor="@color/primary_text"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <ImageButton
+        android:id="@+id/buttonAudioThing"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/buttonshape"
+        android:elevation="30dp"
+        android:padding="0dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_audio" />
+
+    <ImageButton
+        android:id="@+id/buttonRightThing"
+        android:layout_width="65dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/buttonshape"
+        android:clipToPadding="false"
+        android:elevation="30dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_rightarrow" />
+
+    <ImageButton
+        android:id="@+id/buttonLeftThing"
+        android:layout_width="65dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/buttonshape"
+        android:elevation="30dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_leftarrow" />
+</RelativeLayout>
