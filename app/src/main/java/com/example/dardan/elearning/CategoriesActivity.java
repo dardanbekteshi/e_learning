@@ -74,7 +74,7 @@ public class CategoriesActivity extends AppCompatActivity implements AdapterView
         foodCategory.addThing(new Thing(R.drawable.pizza, R.raw.pizza, "Pizza"));
         foodCategory.addThing(new Thing(R.drawable.sandwich, R.raw.sandwich, "Sandwich"));
         foodCategory.addThing(new Thing(R.drawable.sausage, R.raw.sausage, "Sausage"));
-        foodCategory.addThing(new Thing(R.drawable.watter, R.raw.watter, "Watter"));
+        foodCategory.addThing(new Thing(R.drawable.watter, R.raw.water, "Water"));
 
         colorsCategory.addThing(new Thing(R.drawable.blue, R.raw.blue, "Blue"));
         colorsCategory.addThing(new Thing(R.drawable.pink, R.raw.pink, "Pink"));

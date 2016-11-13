@@ -1,5 +1,6 @@
 package com.example.dardan.elearning;
 
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
@@ -35,6 +36,8 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_things);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mainName = (TextView) findViewById(R.id.thingName);
         mainPicture = (ImageView) findViewById(R.id.thingImage);
         rightButton = (ImageButton) findViewById(R.id.buttonRightThing);
@@ -52,6 +55,12 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonLeftThing:
@@ -63,7 +72,12 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
                 updateResources();
                 break;
             case R.id.buttonAudioThing:
-                playSound();
+                //playSound();
+                Intent previousIntent = getIntent();
+                int position = previousIntent.getIntExtra("position", 0);
+                Intent intent = new Intent(this, QuizActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
                 break;
             case R.id.thingImage:
                 if (currentThing.hasNoise())

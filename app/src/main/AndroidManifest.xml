@@ -9,17 +9,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.dardan.elearning.CategoriesActivity"
-            android:label="Categories">
+            android:name=".CategoriesActivity"
+            android:label="Categories"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.dardan.elearning.ThingsActivity"
-            android:label="Things" />
+            android:name=".ThingsActivity"
+            android:label="Things"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".QuizActivity"
+            android:label="Quiz"
+            android:screenOrientation="portrait">
+            <!--<meta-data-->
+            <!--android:name="android.support.PARENT_ACTIVITY"-->
+            <!--android:value=".CategoriesActivity" />-->
+        </activity>
     </application>
 
 </manifest>
