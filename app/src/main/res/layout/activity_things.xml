@@ -8,16 +8,15 @@
     <ImageView
 
         android:id="@+id/thingImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_above="@+id/thingName"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:background="@color/primary_light"
         android:scaleType="centerInside"
-        android:src="@drawable/orange" />
+        android:src="@drawable/bear" />
 
     <TextView
         android:id="@+id/thingName"
@@ -77,4 +76,15 @@
         android:elevation="30dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_leftarrow" />
+
+    <ImageView
+        android:id="@+id/buttonQuiz"
+        android:layout_width="75dp"
+        android:layout_height="65dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_face_white" />
 </RelativeLayout>

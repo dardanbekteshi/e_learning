@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/quiz_title"
+        android:icon="@drawable/ic_face_white"
+        android:title="Quizzes"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/quiz_fruits"
+                android:title="Fruits" />
+            <item
+                android:id="@+id/quiz_animals"
+                android:title="Animals" />
+            <item
+                android:id="@+id/quiz_food"
+                android:title="Food" />
+            <item
+                android:id="@+id/quiz_colors"
+                android:title="Colors" />
+        </menu>
+    </item>
+</menu>

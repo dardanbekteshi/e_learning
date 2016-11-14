@@ -3,6 +3,9 @@ package com.example.dardan.elearning;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +21,38 @@ public class CategoriesActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_card_list);
         categories = new ArrayList<>();
         populateCategoriesList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_quiz, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(this, QuizActivity.class);
+        switch (item.getItemId()) {
+            case R.id.quiz_fruits:
+                intent.putExtra("position", 0);
+                startActivity(intent);
+                return true;
+            case R.id.quiz_animals:
+                intent.putExtra("position", 1);
+                startActivity(intent);
+                return true;
+            case R.id.quiz_food:
+                intent.putExtra("position", 2);
+                startActivity(intent);
+                return true;
+            case R.id.quiz_colors:
+                intent.putExtra("position", 3);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void populateCategoriesList() {
@@ -74,7 +109,7 @@ public class CategoriesActivity extends AppCompatActivity implements AdapterView
         foodCategory.addThing(new Thing(R.drawable.pizza, R.raw.pizza, "Pizza"));
         foodCategory.addThing(new Thing(R.drawable.sandwich, R.raw.sandwich, "Sandwich"));
         foodCategory.addThing(new Thing(R.drawable.sausage, R.raw.sausage, "Sausage"));
-        foodCategory.addThing(new Thing(R.drawable.watter, R.raw.water, "Water"));
+        foodCategory.addThing(new Thing(R.drawable.water, R.raw.water, "Water"));
 
         colorsCategory.addThing(new Thing(R.drawable.blue, R.raw.blue, "Blue"));
         colorsCategory.addThing(new Thing(R.drawable.pink, R.raw.pink, "Pink"));

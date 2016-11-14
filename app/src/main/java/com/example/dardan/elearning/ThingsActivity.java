@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 public class ThingsActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageButton rightButton;
     private ImageButton leftButton;
+    private ImageView quizButton;
     private ImageView mainPicture;
     private TextView mainName;
     private ImageButton audioButton;
@@ -44,11 +46,13 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         leftButton = (ImageButton) findViewById(R.id.buttonLeftThing);
         audioButton = (ImageButton) findViewById(R.id.buttonAudioThing);
         relativeLayout = (RelativeLayout) findViewById(R.id.thingLayout);
+        quizButton = (ImageView) findViewById(R.id.buttonQuiz);
 
         rightButton.setOnClickListener(this);
         leftButton.setOnClickListener(this);
         audioButton.setOnClickListener(this);
         mainPicture.setOnClickListener(this);
+        quizButton.setOnClickListener(this);
 
         currentThing = currentCategory.currentThing();//
         updateResources();
@@ -72,17 +76,23 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
                 updateResources();
                 break;
             case R.id.buttonAudioThing:
-                //playSound();
+                playSound();
+                break;
+            case R.id.thingImage:
+                if (currentThing.hasNoise()) {
+                    playNoise();
+                }
+                break;
+            case R.id.buttonQuiz:
                 Intent previousIntent = getIntent();
                 int position = previousIntent.getIntExtra("position", 0);
                 Intent intent = new Intent(this, QuizActivity.class);
                 intent.putExtra("position", position);
                 startActivity(intent);
                 break;
-            case R.id.thingImage:
-                if (currentThing.hasNoise())
-                    playNoise();
         }
+
+
     }
 
     protected void updateResources() {
