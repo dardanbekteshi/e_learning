@@ -5,12 +5,12 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,8 +28,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private RadioButton answer2;
     private RadioButton answer3;
     private Thing thingAnswer;
-    private int highscore = 0;
-    private int nrOfQuestions = 0;
+    private TextView questionTextView;
+    private TextView scoreTextView;
+    private int score = 0;
+    private int questionNumber = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         answer1 = (RadioButton) findViewById(R.id.answer1);
         answer2 = (RadioButton) findViewById(R.id.answer2);
         answer3 = (RadioButton) findViewById(R.id.answer3);
+        scoreTextView = (TextView) findViewById(R.id.scoreCounter);
+        questionTextView = (TextView) findViewById(R.id.questionCounter);
 
         answer1.setOnClickListener(this);
         answer2.setOnClickListener(this);
@@ -62,10 +66,14 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void updateResources() {
-        nrOfQuestions++;
-        if (nrOfQuestions > 5){
+        if (questionNumber == 1) {
+            scoreTextView.setText("Score: " + 0);
+        } else if (questionNumber > 5) {
             this.finish();
+            return;
         }
+        questionTextView.setText("Question: " + questionNumber);
+        questionNumber++;
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = this.getTheme(); //gets the current Theme
         theme.resolveAttribute(R.attr.colorPrimaryLight, typedValue, true); //merr vleren e atributit background - fillimisht duhet te deklarohet ne attrs.xml
@@ -110,43 +118,27 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.answer1:
-                if (answer1.getText() == thingAnswer.getText()) {
-                    highscore++;
-                    Toast.makeText(this, "Correct! Well Done: " + highscore, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.answer2:
-                if (answer2.getText() == thingAnswer.getText()) {
-                    highscore++;
-                    Toast.makeText(this, "Correct! Well Done: " + highscore, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.answer3:
-                if (answer3.getText() == thingAnswer.getText()) {
-                    highscore++;
-                    Toast.makeText(this, "Correct! Well Done: " + highscore, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
-                }
-                break;
+    public void onClick(final View v) {
+        if (v instanceof RadioButton) {
+            if (((RadioButton) v).getText() == thingAnswer.getText()) {
+                score++;
+                scoreTextView.setText("Score: " + score);
+                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
+            }
         }
-        //wait 2 seconds before showing the next question
-        final Handler handler = new Handler();
+        Handler handler = new Handler();
+        // wait 2 seconds before going to the next question
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 updateResources();
+                if (v instanceof RadioButton)
+                    ((RadioButton) v).setChecked(false);
             }
         }, 2000);
-        answer1.setChecked(false);
-        answer2.setChecked(false);
-        answer3.setChecked(false);
+//        // lambda expression as a replacement for the Runnable anonymous class
+//        handler.postDelayed(() -> updateResources(), 2000);
     }
 }

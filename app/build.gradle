@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "com.example.dardan.elearning"
@@ -10,7 +10,16 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+//        uncomment jackOptions for Java8 support
+//        jackOptions {
+//            enabled false
+//        }
     }
+//    uncomment compileOptions for Java8 support
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
     buildTypes {
         release {
             minifyEnabled false
