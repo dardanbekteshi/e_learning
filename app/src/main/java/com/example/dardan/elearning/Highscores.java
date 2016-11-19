@@ -15,11 +15,6 @@ import java.util.List;
  */
 
 public class Highscores {
-//    private int id;
-//    private int fruitScore;
-//    private int animalsScore;
-//    private int foodScore;
-//    private int colorsScore;
 
     private static SQLiteDatabase database;
     private static MySQLiteHelper dbHelper;
@@ -29,10 +24,6 @@ public class Highscores {
             MySQLiteHelper.COLUMN_FOOD,
             MySQLiteHelper.COLUMN_COLORS
     };
-
-//    public Highscores(Context context) {
-//        dbHelper = new MySQLiteHelper(context);
-//    }
 
     public static void open(Context context) throws SQLException {
         dbHelper = new MySQLiteHelper(context);
