@@ -25,9 +25,6 @@
             android:name=".QuizActivity"
             android:label="Quiz"
             android:screenOrientation="portrait">
-            <!--<meta-data-->
-            <!--android:name="android.support.PARENT_ACTIVITY"-->
-            <!--android:value=".CategoriesActivity" />-->
         </activity>
     </application>
 

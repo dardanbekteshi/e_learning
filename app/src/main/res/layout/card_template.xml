@@ -33,7 +33,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/card_image"
             android:textColor="@color/icons"
-            android:textSize="27sp" />
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/card_highscore"
@@ -42,7 +42,7 @@
             android:layout_below="@+id/card_title"
             android:layout_toRightOf="@+id/card_image"
             android:textColor="#ffffff"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

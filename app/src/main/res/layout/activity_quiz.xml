@@ -37,15 +37,14 @@
         android:layout_alignParentRight="true"
         android:text="Score:5"
         android:textColor="#000000"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold" />
-
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
+        android:showDividers="middle"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-
         android:layout_centerHorizontal="true">
 
         <RadioButton
@@ -54,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:padding="0dp"
-            android:text="Watermelon"
+            android:text="Cherry"
             android:textAlignment="center"
             android:textSize="30dp"
             android:textStyle="bold" />

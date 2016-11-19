@@ -13,13 +13,17 @@ public class Category {
     int highscore;
     int color;
     int theme;
+    String columnName;
+    int quizImage;
 
-    public Category(String title,int image,int highscore,int color,int theme){
+    public Category(String title,int image,int highscore,int color,int theme, String columnName, int quizImage){
         this.title=title;
         this.image=image;
         this.highscore=highscore;
         this.color=color;
         this.theme=theme;
+        this.columnName=columnName;
+        this.quizImage=quizImage;
         this.things=new ArrayList<>();
     }
     public void addThing(Thing thing){
@@ -52,5 +56,9 @@ public class Category {
 
     public void goToFirstThing(){
         currentIndex=0;
+    }
+
+    public void updateHighscore(){
+        this.highscore = Highscores.getHighscore(this.columnName);
     }
 }

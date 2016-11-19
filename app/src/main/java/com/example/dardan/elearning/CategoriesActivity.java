@@ -3,6 +3,7 @@ package com.example.dardan.elearning;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,9 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public static ArrayList<Category> categories;
+    CustomCategoryAdapter adapter;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,12 @@ public class CategoriesActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_card_list);
         categories = new ArrayList<>();
         populateCategoriesList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateHighscores();
     }
 
     @Override
@@ -56,10 +66,36 @@ public class CategoriesActivity extends AppCompatActivity implements AdapterView
     }
 
     private void populateCategoriesList() {
-        Category fruitCategory = new Category("Fruits", R.drawable.fruits, 77, getResources().getColor(R.color.primary_dark), R.style.GreenTheme);
-        Category animalCategory = new Category("Animals", R.drawable.animals, 66, getResources().getColor(R.color.blue_primary_dark), R.style.BlueTheme);
-        Category foodCategory = new Category("Food", R.drawable.food, 55, getResources().getColor(R.color.pink_primary_dark), R.style.PinkTheme);
-        Category colorsCategory = new Category("Colors", R.drawable.colors, 44, getResources().getColor(R.color.purple_primary_dark), R.style.PurpleTheme);
+        Highscores.open(this);
+        Category fruitCategory = new Category("Fruits",
+                R.drawable.fruits,
+                Highscores.getHighscore(MySQLiteHelper.COLUMN_FRUITS),
+                getResources().getColor(R.color.primary_dark),
+                R.style.GreenTheme,
+                MySQLiteHelper.COLUMN_FRUITS,
+                R.drawable.ic_face_green);
+        Category animalCategory = new Category("Animals",
+                R.drawable.animals,
+                Highscores.getHighscore(MySQLiteHelper.COLUMN_ANIMALS),
+                getResources().getColor(R.color.blue_primary_dark),
+                R.style.BlueTheme,
+                MySQLiteHelper.COLUMN_ANIMALS,
+                R.drawable.ic_face_blue);
+        Category foodCategory = new Category("Food",
+                R.drawable.food,
+                Highscores.getHighscore(MySQLiteHelper.COLUMN_FOOD),
+                getResources().getColor(R.color.pink_primary_dark),
+                R.style.PinkTheme,
+                MySQLiteHelper.COLUMN_FOOD,
+                R.drawable.ic_face_pink);
+        Category colorsCategory = new Category("Colors",
+                R.drawable.colors,
+                Highscores.getHighscore(MySQLiteHelper.COLUMN_COLORS),
+                getResources().getColor(R.color.purple_primary_dark),
+                R.style.PurpleTheme,
+                MySQLiteHelper.COLUMN_COLORS,
+                R.drawable.ic_face_purple);
+        Highscores.close();
 
         fruitCategory.addThing(new Thing(R.drawable.apple, R.raw.apple, "Apple"));
         fruitCategory.addThing(new Thing(R.drawable.orange, R.raw.orange, "Orange"));
@@ -129,11 +165,22 @@ public class CategoriesActivity extends AppCompatActivity implements AdapterView
         categories.add(colorsCategory);
 
         // Create the adapter to convert the array to views
-        CustomCategoryAdapter adapter = new CustomCategoryAdapter(this, categories);
+        adapter = new CustomCategoryAdapter(this, categories);
         // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.listViewCards);
+        listView = (ListView) findViewById(R.id.listViewCards);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+    }
+
+    private void updateHighscores() {
+        Highscores.open(this);
+        for (Category c : categories) {
+            c.updateHighscore();
+        }
+        Highscores.close();
+        // notifies the adapter to display the latest Highscores
+        // actually this method calls getView from CustomCategoryAdapter class
+        adapter.notifyDataSetChanged();
     }
 
     @Override

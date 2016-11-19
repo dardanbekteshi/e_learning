@@ -66,10 +66,15 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void updateResources() {
+        // if the quiz has just started
         if (questionNumber == 1) {
             scoreTextView.setText("Score: " + 0);
-        } else if (questionNumber > 5) {
+        } else if (questionNumber > 10) {
             this.finish();
+            Highscores.open(this);
+            if(Highscores.setHighscore(currentCategory.columnName, score))
+                Toast.makeText(this,"New Highscore!",Toast.LENGTH_LONG).show();
+            Highscores.close();
             return;
         }
         questionTextView.setText("Question: " + questionNumber);
@@ -125,7 +130,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 scoreTextView.setText("Score: " + score);
                 Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
             }
         }
         Handler handler = new Handler();

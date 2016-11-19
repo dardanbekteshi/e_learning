@@ -91,8 +91,6 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
         }
-
-
     }
 
     protected void updateResources() {
@@ -128,10 +126,12 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
 
         setTitle(currentCategory.title);
         mainPicture.setImageResource(currentThing.getImage());
+        quizButton.setImageResource(currentCategory.quizImage);
         mainName.setText(currentThing.getText());
 
         rightButton.setVisibility(currentCategory.hasNextThing() ? View.VISIBLE : View.INVISIBLE);
         leftButton.setVisibility(currentCategory.hasPrevThing() ? View.VISIBLE : View.INVISIBLE);
+
     }
 
     private void setButtonColor(ImageButton button, int color) {
