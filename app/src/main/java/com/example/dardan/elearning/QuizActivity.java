@@ -66,6 +66,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void updateResources() {
+
         // if the quiz has just started
         if (questionNumber == 1) {
             scoreTextView.setText("Score: " + 0);
@@ -101,7 +102,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         // e.g., 1-Mango
         int index = indexes.get(r.nextInt(indexes.size()));
         thingAnswer = things.get(answers[index]);
+
+        mainPicture.setVisibility(View.INVISIBLE);
         mainPicture.setImageResource(thingAnswer.getImage());
+        mainPicture.setVisibility(View.VISIBLE);
 
         setRandomAnswer(answer1, indexes, answers);
         setRandomAnswer(answer2, indexes, answers);
@@ -128,7 +132,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             if (((RadioButton) v).getText() == thingAnswer.getText()) {
                 score++;
                 scoreTextView.setText("Score: " + score);
-                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Well done!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
             }

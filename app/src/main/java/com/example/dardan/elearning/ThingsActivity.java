@@ -123,15 +123,16 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         mainPicture.setBackgroundColor(primaryLightColor);
         relativeLayout.setBackgroundColor(primaryLightColor);
         mainName.setBackgroundColor(primaryLightColor);
-
         setTitle(currentCategory.title);
+        // make the picture Invisible and then Visible to add some animation
+        mainPicture.setVisibility(View.INVISIBLE);
         mainPicture.setImageResource(currentThing.getImage());
+        mainPicture.setVisibility(View.VISIBLE);
         quizButton.setImageResource(currentCategory.quizImage);
         mainName.setText(currentThing.getText());
 
         rightButton.setVisibility(currentCategory.hasNextThing() ? View.VISIBLE : View.INVISIBLE);
         leftButton.setVisibility(currentCategory.hasPrevThing() ? View.VISIBLE : View.INVISIBLE);
-
     }
 
     private void setButtonColor(ImageButton button, int color) {
