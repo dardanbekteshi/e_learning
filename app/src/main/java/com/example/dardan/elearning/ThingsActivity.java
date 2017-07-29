@@ -54,12 +54,29 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         mainPicture.setOnClickListener(this);
         quizButton.setOnClickListener(this);
 
-        currentThing = currentCategory.currentThing();//
+        currentThing = currentCategory.currentThing();
         updateResources();
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        // it is considered good practice to release the Media Player object
+        // when the activity is stopped
+        releaseMediaPlayer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // it is considered good practice to release the Media Player object
+        // when the activity is paused
+        releaseMediaPlayer();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
+        // closes the Activity when the back button on the action bar is pressed
         finish();
         return true;
     }
@@ -93,37 +110,37 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * Plays the appropriate sound/noise for the current thing and
+     * updates the UI (button color & text, background color etc.) based on the
+     * current Category and Thing
+     */
     protected void updateResources() {
-        if (currentThing.hasNoise()) {
+        if (currentThing.hasNoise())
             playNoise();
-            //wait until the sound noise finishes
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer player) {
-                    player.release();
-                    playSound();
-                }
-            });
-
-        } else {
+        else
             playSound();
-        }
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = this.getTheme(); //gets the current Theme
-        theme.resolveAttribute(R.attr.colorAccent, typedValue, true);//merr vleren e nje atributi te kesaj theme dhe e vendos ne typedValue
+
+        // retrieves the color value from this theme and puts it in the typedValue variable
+        theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
         int accentColor = typedValue.data;
 
         setButtonColor(leftButton, accentColor);
         setButtonColor(rightButton, accentColor);
         setButtonColor(audioButton, accentColor);
 
-        theme.resolveAttribute(R.attr.colorPrimaryLight, typedValue, true);//merr vleren e atributit background - fillimisht duhet te deklarohet ne attrs.xml
+        // merr vleren e atributit background - fillimisht duhet te deklarohet ne attrs.xml
+        theme.resolveAttribute(R.attr.colorPrimaryLight, typedValue, true);
         int primaryLightColor = typedValue.data;
 
         mainPicture.setBackgroundColor(primaryLightColor);
         relativeLayout.setBackgroundColor(primaryLightColor);
         mainName.setBackgroundColor(primaryLightColor);
         setTitle(currentCategory.title);
+
         // make the picture Invisible and then Visible to add some animation
         mainPicture.setVisibility(View.INVISIBLE);
         mainPicture.setImageResource(currentThing.getImage());
@@ -140,13 +157,62 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         bgShape.setColor(color);
     }
 
-    protected void playSound() {
+    /**
+     * Plays the sound of the current thing.
+     * If the media player is in the middle of playing another sound/noise,
+     * it stops and resets the player and starts playing the noise.
+     */
+    private void playSound() {
+        // if the player is in the middle of playing another sound/noise
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            stopAndResetPlayer();
+        }
         mediaPlayer = MediaPlayer.create(this, currentThing.getSound());
         mediaPlayer.start();
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer player) {
+                player.reset();
+            }
+        });
     }
 
-    protected void playNoise() {
+    /**
+     * Plays the noise of the current thing.
+     * If the media player is in the middle of playing another sound/noise,
+     * it stops and resets the player and starts playing the noise.
+     */
+    private void playNoise() {
+        // if the player is in the middle of playing another sound/noise
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            stopAndResetPlayer();
+        }
         mediaPlayer = MediaPlayer.create(this, currentThing.getNoise());
         mediaPlayer.start();
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer player) {
+                player.reset();
+                playSound();
+            }
+        });
+    }
+
+    /**
+     * Stops and resets the Media Player associated with this Activity
+     */
+    private void stopAndResetPlayer() {
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+    }
+
+    /**
+     * Releases the media player (if is not null) and sets it to null
+     */
+    private void releaseMediaPlayer() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
