@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -32,6 +33,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView scoreTextView;
     private int score = 0;
     private int questionNumber = 1;
+
+    // if this variable is set, the touch events are not processed (the UI is blocked)
+    private boolean stopUserInteractions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // doesn't process the touch events if this variable is set to true
+        if (stopUserInteractions) {
+            return true;
+        } else {
+            return super.dispatchTouchEvent(ev);
+        }
+    }
+
     protected void updateResources() {
 
         // if the quiz has just started
@@ -73,8 +87,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         } else if (questionNumber > 10) {
             this.finish();
             Highscores.open(this);
-            if(Highscores.setHighscore(currentCategory.columnName, score))
-                Toast.makeText(this,"New Highscore!",Toast.LENGTH_LONG).show();
+            if (Highscores.setHighscore(currentCategory.columnName, score))
+                Toast.makeText(this, "New Highscore!", Toast.LENGTH_LONG).show();
             Highscores.close();
             return;
         }
@@ -82,7 +96,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         questionNumber++;
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = this.getTheme(); //gets the current Theme
-        theme.resolveAttribute(R.attr.colorPrimaryLight, typedValue, true); //merr vleren e atributit background - fillimisht duhet te deklarohet ne attrs.xml
+
+        //merr vleren e atributit background - fillimisht duhet te deklarohet ne attrs.xml
+        theme.resolveAttribute(R.attr.colorPrimaryLight, typedValue, true);
         int primaryLightColor = typedValue.data;
         mainPicture.setBackgroundColor(primaryLightColor);
         relativeLayout.setBackgroundColor(primaryLightColor);
@@ -137,6 +153,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
             }
         }
+        // block UI so the user is not able to select answer before the new question appears
+        stopUserInteractions = true;
         Handler handler = new Handler();
         // wait 2 seconds before going to the next question
         handler.postDelayed(new Runnable() {
@@ -145,6 +163,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 updateResources();
                 if (v instanceof RadioButton)
                     ((RadioButton) v).setChecked(false);
+                stopUserInteractions = false; // enable UI again after the next question is displayed
             }
         }, 2000);
 //        // lambda expression as a replacement for the Runnable anonymous class
