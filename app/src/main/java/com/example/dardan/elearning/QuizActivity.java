@@ -2,6 +2,7 @@ package com.example.dardan.elearning;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -31,6 +33,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Thing thingAnswer;
     private TextView questionTextView;
     private TextView scoreTextView;
+    private MediaPlayer mediaPlayer;
+
     private int score = 0;
     private int questionNumber = 1;
 
@@ -60,8 +64,26 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         answer1.setOnClickListener(this);
         answer2.setOnClickListener(this);
         answer3.setOnClickListener(this);
+
         updateResources();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // it is considered good practice to release the Media Player object
+        // when the activity is stopped
+        releaseMediaPlayer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // it is considered good practice to release the Media Player object
+        // when the activity is paused
+        releaseMediaPlayer();
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -71,7 +93,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        // doesn't process the touch events if this variable is set to true
+        // it won't process the touch events if this variable is set to true
         if (stopUserInteractions) {
             return true;
         } else {
@@ -148,9 +170,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             if (((RadioButton) v).getText() == thingAnswer.getText()) {
                 score++;
                 scoreTextView.setText("Score: " + score);
-                Toast.makeText(this, "Well done!", Toast.LENGTH_SHORT).show();
+                playSound(true);
             } else {
-                Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+                playSound(false);
             }
         }
         // block UI so the user is not able to select answer before the new question appears
@@ -168,5 +190,67 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }, 2000);
 //        // lambda expression as a replacement for the Runnable anonymous class
 //        handler.postDelayed(() -> updateResources(), 2000);
+    }
+
+    /**
+     * Plays a random sound effect
+     *
+     * @param isCorrect true if the answer is correct, false otherwise
+     */
+    private void playSound(boolean isCorrect) {
+        mediaPlayer = MediaPlayer.create(this,
+                isCorrect ? randomCorrectSound() : randomWrongSound());
+        mediaPlayer.start();
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer player) {
+                player.reset();
+            }
+        });
+    }
+
+    /**
+     * Populates a list with sound effects for correct answers and chooses
+     * one of them randomly
+     *
+     * @return a randomly chosen sound effect from the list
+     */
+    private int randomCorrectSound() {
+        List<Integer> correctSounds = new ArrayList<>();
+        correctSounds.add(R.raw.correct1_good_job);
+        correctSounds.add(R.raw.correct2_well_done);
+        correctSounds.add(R.raw.correct3_perfect);
+        correctSounds.add(R.raw.correct4_amazing);
+        correctSounds.add(R.raw.correct5_great);
+        Random rand = new Random();
+
+        return correctSounds.get(rand.nextInt(correctSounds.size()));
+    }
+
+    /**
+     * Populates a list with sound effects for wrong answers and chooses
+     * one of them randomly
+     *
+     * @return a randomly chosen sound effect from the list
+     */
+    private int randomWrongSound() {
+        List<Integer> wrongSounds = new ArrayList<>();
+        wrongSounds.add(R.raw.wrong1_oh_no);
+        wrongSounds.add(R.raw.wrong2_try_again);
+        wrongSounds.add(R.raw.wrong3_wrong);
+        wrongSounds.add(R.raw.wrong4_you_need_some_practice);
+        Random rand = new Random();
+
+        return wrongSounds.get(rand.nextInt(wrongSounds.size()));
+    }
+
+    /**
+     * Releases the media player (if is not null) and sets it to null
+     */
+    private void releaseMediaPlayer() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
