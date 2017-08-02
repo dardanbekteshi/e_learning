@@ -115,10 +115,16 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
      * updates the UI (button color & text, background color etc.) based on the
      * current Category and Thing
      */
-    protected void updateResources() {
-        if (currentThing.hasNoise())
+    protected void  updateResources() {
+        if (currentThing.hasNoise()) {
             playNoise();
-        else
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer player) {
+                    player.reset();
+                    playSound();
+                }
+            });
+        } else
             playSound();
 
         TypedValue typedValue = new TypedValue();
@@ -193,7 +199,6 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer player) {
                 player.reset();
-                playSound();
             }
         });
     }
