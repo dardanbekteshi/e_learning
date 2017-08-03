@@ -93,11 +93,11 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
                 updateResources();
                 break;
             case R.id.buttonAudioThing:
-                playSound();
+                playSound(currentThing.getSound());
                 break;
             case R.id.thingImage:
                 if (currentThing.hasNoise()) {
-                    playNoise();
+                    playSound(currentThing.getNoise());
                 }
                 break;
             case R.id.buttonQuiz:
@@ -115,17 +115,17 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
      * updates the UI (button color & text, background color etc.) based on the
      * current Category and Thing
      */
-    protected void  updateResources() {
+    protected void updateResources() {
         if (currentThing.hasNoise()) {
-            playNoise();
+            playSound(currentThing.getNoise());
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 public void onCompletion(MediaPlayer player) {
                     player.reset();
-                    playSound();
+                    playSound(currentThing.getSound());
                 }
             });
         } else
-            playSound();
+            playSound(currentThing.getSound());
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = this.getTheme(); //gets the current Theme
@@ -164,36 +164,18 @@ public class ThingsActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
-     * Plays the sound of the current thing.
+     * Plays the sound/noise which is passed as an argument.
      * If the media player is in the middle of playing another sound/noise,
-     * it stops and resets the player and starts playing the noise.
+     * it stops and resets the player and starts playing the sound.
+     *
+     * @param sound the sound to be played by the player
      */
-    private void playSound() {
+    private void playSound(int sound) {
         // if the player is in the middle of playing another sound/noise
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             stopAndResetPlayer();
         }
-        mediaPlayer = MediaPlayer.create(this, currentThing.getSound());
-        mediaPlayer.start();
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer player) {
-                player.reset();
-            }
-        });
-    }
-
-    /**
-     * Plays the noise of the current thing.
-     * If the media player is in the middle of playing another sound/noise,
-     * it stops and resets the player and starts playing the noise.
-     */
-    private void playNoise() {
-        // if the player is in the middle of playing another sound/noise
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            stopAndResetPlayer();
-        }
-        mediaPlayer = MediaPlayer.create(this, currentThing.getNoise());
+        mediaPlayer = MediaPlayer.create(this, sound);
         mediaPlayer.start();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
